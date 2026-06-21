@@ -62,5 +62,47 @@
             `;
         });
     </script>
+    <script>
+    // بيانات الكراسات (مثال مختصر)
+    const courses = [
+        {
+            id: 1,
+            title: "أركان الإيمان",
+            icon: "fa-star",
+            color: "#D4AF37",
+            lessons: [
+                { title: "ما هو التوحيد؟", content: "<p>...</p>" },
+                // باقي الدروس
+            ]
+        },
+        // باقي الكراسات...
+    ];
+
+    // دالة حساب التقدم (مثال مبسط)
+    function getCourseProgress(courseId) {
+        // يمكنك تبسيطها لإرجاع 0 مؤقتاً
+        return 0;
+    }
+
+    // توليد البطاقات
+    const grid = document.getElementById('coursesGrid');
+    if (grid) {
+        courses.forEach(c => {
+            const pct = getCourseProgress(c.id);
+            grid.innerHTML += `
+                <div class="course-card" onclick="location.href='course-${c.id}.html'">
+                    <div class="icon"><i class="fas ${c.icon}" style="color:${c.color}"></i></div>
+                    <h3>${c.title}</h3>
+                    <div class="badge">${c.lessons.length} دروس</div>
+                    <div class="progress-indicator"><div class="fill" style="width:${pct}%;"></div></div>
+                    <span style="font-size:0.8rem;color:var(--text-light);">${pct}%</span>
+                </div>
+            `;
+        });
+    } else {
+        console.error('العنصر #coursesGrid غير موجود في الصفحة.');
+    }
+</script>
+    
 </body>
 </html>
