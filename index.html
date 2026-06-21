@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حصون الإيمان – المنهج الصيفي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <a class="logo" href="index.html"><i class="fas fa-shield-alt"></i> حصون الإيمان</a>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="plan.html">خطة التدريس</a></li>
+            <li><a class="btn-nav" href="contact.html">تواصل معنا</a></li>
+        </ul>
+    </nav>
+
+    <!-- محتوى الصفحة الرئيسية -->
+    <div class="app-container">
+        <div class="hero">
+            <h1>حصون الإيمان</h1>
+            <p>المنهج الصيفي المتكامل لبناء شخصية ابنك المسلمة</p>
+            <p class="sub-meta">📚 10 كراسات &nbsp;|&nbsp; 130 درساً &nbsp;|&nbsp; 45 يوماً</p>
+        </div>
+
+        <h2 class="section-title">الكراسات العشر</h2>
+        <div class="courses-grid" id="coursesGrid">
+            <!-- يتم توليد البطاقات بواسطة JavaScript -->
+        </div>
+    </div>
+
+    <!-- التذييل -->
+    <footer>
+        <p>© 2026 حصون الإيمان. جميع الحقوق محفوظة.</p>
+        <div class="social-links">
+            <a href="https://chat.whatsapp.com/ImbpCTYkTwHJvD9akTAIPD"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://t.me/+bHRjkt2DD_BmODhk"><i class="fab fa-telegram"></i></a>
+            <a href="mailto:abukora8@gmail.com"><i class="far fa-envelope"></i></a>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/progress.js"></script>
+    <script>
+        // توليد بطاقات الكراسات
+        const grid = document.getElementById('coursesGrid');
+        courses.forEach(c => {
+            const pct = getCourseProgress(c.id);
+            grid.innerHTML += `
+                <div class="course-card" onclick="location.href='course-${c.id}.html'">
+                    <div class="icon"><i class="fas ${c.icon}" style="color:${c.color}"></i></div>
+                    <h3>${c.title}</h3>
+                    <div class="badge">${c.lessons.length} دروس</div>
+                    <div class="progress-indicator"><div class="fill" style="width:${pct}%;"></div></div>
+                    <span style="font-size:0.8rem;color:var(--text-light);">${pct}%</span>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
