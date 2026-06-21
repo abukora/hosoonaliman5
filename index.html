@@ -308,18 +308,7 @@
         }
 
         // ==================== دوال التفاعل ====================
-        function completeLessonFromView(courseId, lessonIndex) {
-            if (isLessonDone(courseId, lessonIndex)) {
-                showCheerMessage("🎯", "الدرس مكتمل بالفعل!", "أنت ممتاز! واصل التقدم.");
-                return;
-            }
-            localStorage.setItem(getProgressKey(courseId, lessonIndex), 'true');
-            // تحديث العرض
-            renderSection();
-            const msgs = ["أحسنت يا بطل! 🌟", "ممتاز! استمر! 💪", "رائع! أنت تتقدم بثبات 🚀", "ما شاء الله عليك! 👏", "أنت بطل حصون الإيمان! 🏆"];
-            const msg = msgs[Math.floor(Math.random() * msgs.length)];
-            showCheerMessage("🌟🌟🌟🌟🌟", msg, "لقد أتممت الدرس بنجاح، واصل رحلتك الإيمانية!");
-        }
+ 
 
         function showCheerMessage(stars, title, desc) {
             document.querySelector('#cheerModal .stars').textContent = stars;
