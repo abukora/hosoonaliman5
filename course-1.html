@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أركان الإيمان – حصون الإيمان</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+    <!-- شريط التنقل (نفسه) -->
+    <nav class="navbar">
+        <a class="logo" href="index.html"><i class="fas fa-shield-alt"></i> حصون الإيمان</a>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="plan.html">خطة التدريس</a></li>
+            <li><a class="btn-nav" href="contact.html">تواصل معنا</a></li>
+        </ul>
+    </nav>
+
+    <div class="app-container" id="courseContainer">
+        <!-- يتم تعبئة المحتوى بواسطة JS -->
+    </div>
+
+    <footer>...</footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/progress.js"></script>
+    <script>
+        // تحديد الكراسة من اسم الملف (course-1 → id=1)
+        const courseId = parseInt(window.location.pathname.split('-')[1].split('.')[0]) || 1;
+        const course = courses.find(c => c.id === courseId);
+        if (!course) {
+            document.getElementById('courseContainer').innerHTML = '<p>الكراسة غير موجودة.</p>';
+        } else {
+            let html = `
+                <div class="course-header">
+                    <a href="index.html" class="btn-back"><i class="fas fa-arrow-right"></i> العودة</a>
+                    <span class="course-title">${course.title}</span>
+                    <span class="course-stats"><i class="fas fa-book"></i> ${course.lessons.length} درس</span>
+                </div>
+                <div class="lessons-list" id="lessonsList">
+            `;
+            course.lessons.forEach((lesson, idx) => {
+                const done = isLessonDone(courseId, idx);
+                html += `
+                    <div class="lesson-item" onclick="openLesson(${courseId}, ${idx})">
+                        <div class="lesson-number">${idx+1}</div>
+                        <div class="lesson-title">${lesson.title}</div>
+                        <div class="lesson-status">
+                            ${done ? '<i class="fas fa-check-circle" style="color:var(--green);"></i>' : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            document.getElementById('courseContainer').innerHTML = html;
+        }
+
+        function openLesson(courseId, lessonIndex) {
+            // الانتقال إلى صفحة عرض الدرس مع بارامترات
+            window.location.href = `lesson.html?course=${courseId}&lesson=${lessonIndex}`;
+        }
+    </script>
+</body>
+</html>
