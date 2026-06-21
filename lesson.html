@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الدرس – حصون الإيمان</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* تنسيقات متقدمة لمحتوى الدرس */
+        .lesson-content {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px 35px;
+            box-shadow: var(--shadow);
+            line-height: 1.9;
+        }
+        .lesson-content h2 {
+            color: var(--primary-dark);
+            border-right: 6px solid var(--gold);
+            padding-right: 16px;
+            margin-top: 30px;
+            margin-bottom: 16px;
+        }
+        .lesson-content h3 {
+            color: var(--primary-dark);
+            margin-top: 24px;
+            font-weight: 700;
+        }
+        .lesson-content .verse {
+            background: #f0f4f8;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-right: 6px solid var(--gold);
+            font-size: 1.15rem;
+            margin: 20px 0;
+        }
+        .lesson-content .hadith {
+            background: #fef9e7;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-right: 6px solid #f1c40f;
+            margin: 20px 0;
+        }
+        .lesson-content ul, .lesson-content ol {
+            padding-right: 24px;
+            margin: 12px 0;
+        }
+        .lesson-content li {
+            margin-bottom: 8px;
+        }
+        .lesson-content .tip-box {
+            background: #e8f5e9;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border-right: 6px solid var(--green);
+            margin: 20px 0;
+        }
+        .lesson-content .tip-box i {
+            color: var(--green);
+            margin-left: 8px;
+        }
+        .lesson-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .lesson-nav button {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            background: var(--primary-dark);
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lesson-nav button:hover {
+            transform: scale(1.03);
+            opacity: 0.9;
+        }
+        .lesson-nav button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-complete-lesson {
+            background: var(--green) !important;
+        }
+        .btn-complete-lesson.done {
+            background: #6c757d !important;
+        }
+        .share-btn {
+            background: #1a73e8 !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">...</nav>
+
+    <div class="app-container" id="lessonContainer">
+        <!-- يتم تحميل المحتوى هنا -->
+    </div>
+
+    <footer>...</footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/progress.js"></script>
+    <script>
+        // قراءة البارامترات من URL
+        const params = new URLSearchParams(window.location.search);
+        const courseId = parseInt(params.get('course')) || 1;
+        const lessonIndex = parseInt(params.get('lesson')) || 0;
+
+        const course = courses.find(c => c.id === courseId);
+        if (!course || !course.lessons[lessonIndex]) {
+            document.getElementById('lessonContainer').innerHTML = '<p style="text-align:center;padding:40px;">الدرس غير موجود.</p>';
+        } else {
+            const lesson = course.lessons[lessonIndex];
+            const total = course.lessons.length;
+            const prevIdx = lessonIndex - 1;
+            const nextIdx = lessonIndex + 1;
+            const done = isLessonDone(courseId, lessonIndex);
+
+            // تحويل محتوى الدرس من نص عادي إلى HTML مُقسَّم (افتراضيًا لدينا نص بسيط، لكن يمكن تحسينه)
+            // هنا نفترض أن المحتوى يحتوي على عناصر مثل <p> <strong> etc.
+            // نضيف تنسيقات إضافية للعناوين الفرعية إذا وجدت
+            let contentHtml = lesson.content;
+
+            // نضيف بعض التحسينات التلقائية (يمكن توسيعها)
+            contentHtml = contentHtml
+                .replace(/<p><strong>الفقرة الأساسية:<\/strong>/g, '<h3>📌 الفقرة الأساسية</h3><p>')
+                .replace(/<p><strong>الدليل:<\/strong>/g, '<div class="verse"><strong>الدليل:</strong>')
+                .replace(/<p><strong>الشرح:<\/strong>/g, '<h3>📖 الشرح</h3><p>')
+                .replace(/<p><strong>النموذج التطبيقي:<\/strong>/g, '<div class="tip-box"><i class="fas fa-lightbulb"></i> <strong>التطبيق العملي:</strong>')
+                .replace(/<p><strong>الفائدة:<\/strong>/g, '<div class="tip-box" style="background:#fef9e7;border-color:var(--gold);"><i class="fas fa-star" style="color:var(--gold);"></i> <strong>الفائدة:</strong>')
+                .replace(/<\/p><div class="verse">/g, '</p><div class="verse">')
+                .replace(/<\/p><div class="tip-box">/g, '</p><div class="tip-box">');
+
+            // إغلاق الـ divs المفتوحة بشكل آمن (قد تحتاج إلى تحسين)
+            // لكن سنفترض أن المحتوى منظم.
+
+            const html = `
+                <div class="course-header">
+                    <a href="course-${courseId}.html" class="btn-back"><i class="fas fa-arrow-right"></i> العودة للكراسة</a>
+                    <span class="course-title">${course.title}</span>
+                    <span class="course-stats">الدرس ${lessonIndex+1} من ${total}</span>
+                </div>
+
+                <div class="lesson-content">
+                    <h1 style="margin-top:0;">${lesson.title}</h1>
+                    ${contentHtml}
+                </div>
+
+                <div class="lesson-nav">
+                    <div>
+                        <button onclick="navigateLesson(${courseId}, ${prevIdx})" ${prevIdx < 0 ? 'disabled' : ''}>
+                            <i class="fas fa-arrow-right"></i> السابق
+                        </button>
+                        <button onclick="navigateLesson(${courseId}, ${nextIdx})" ${nextIdx >= total ? 'disabled' : ''}>
+                            التالي <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        <button class="btn-complete-lesson ${done ? 'done' : ''}" onclick="completeAndRedirect(${courseId}, ${lessonIndex})">
+                            ${done ? '<i class="fas fa-check-circle"></i> مكتمل' : '<i class="fas fa-check"></i> أتممت هذا الدرس'}
+                        </button>
+                        <button class="share-btn" onclick="shareLesson()"><i class="fas fa-share-alt"></i> مشاركة</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('lessonContainer').innerHTML = html;
+        }
+
+        function navigateLesson(courseId, idx) {
+            if (idx >= 0) {
+                window.location.href = `lesson.html?course=${courseId}&lesson=${idx}`;
+            }
+        }
+
+        function completeAndRedirect(courseId, lessonIndex) {
+            if (isLessonDone(courseId, lessonIndex)) {
+                alert('الدرس مكتمل بالفعل!');
+                return;
+            }
+            localStorage.setItem(`hosoonaliman_progress_${courseId}_${lessonIndex}`, 'true');
+            // إعادة تحميل الصفحة لتحديث الزر
+            window.location.reload();
+        }
+
+        function shareLesson() {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({ title: document.title, url: url });
+            } else {
+                navigator.clipboard.writeText(url).then(() => alert('تم نسخ رابط الدرس!'));
+            }
+        }
+    </script>
+</body>
+</html>
